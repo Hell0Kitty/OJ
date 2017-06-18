@@ -1,0 +1,50 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right>;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right> = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root the root of binary tree
+     * @return the root of the maximum average of subtree 
+     */
+    struct ResultType{
+        int sum = 0;
+        int size = 0;
+        ResultType(int msum, int msize){
+            sum = msum;
+            size = msize;
+        }
+    };
+    double MaxAvg = - INT_MAX;
+    TreeNode* MaxNode = NULL;
+    TreeNode* findSubtree2(TreeNode* root) {
+        // Write your code here
+        findMax(root);
+        return MaxNode;
+    }
+    
+    ResultType findMax(TreeNode * root){
+        if(root == NULL){
+            return {0,0};
+        }
+        ResultType Left = findMax(root -> left);
+        ResultType Right = findMax(root -> right);
+        int sum = root -> val + Left.sum + Right.sum,
+            size = Right.size + Left.size + 1;
+        double currAvg = double(sum)/ size;
+        if(currAvg > MaxAvg){
+            MaxAvg = currAvg;
+            MaxNode = root;
+        }
+        return {sum, size};
+    }
+};

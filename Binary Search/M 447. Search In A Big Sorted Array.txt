@@ -1,0 +1,52 @@
+/**
+ * Definition of ArrayReader:
+ * 
+ * class ArrayReader {
+ * public:
+ *     int get(int index) {
+ *          // return the number on given index, 
+ *          // return -1 if index is less than zero.
+ *     }
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param reader: An instance of ArrayReader.
+     * @param target: An integer
+     * @return: An integer which is the first index of target.
+     */
+    int searchBigSortedArray(ArrayReader *reader, int target) {
+        // write your code here
+        int k = target;
+        if (reader->get(k) == target){
+            return k;
+        }
+        else{
+            if(reader->get(k) < target){
+                k = k * k;
+            }
+        }
+        
+        int begin = 0, mid = 0, end = k;
+        while(begin + 1 < end){
+            mid = begin + (end - begin) / 2;
+            if(reader->get(mid) >= target){
+                end = mid;
+            }
+            else{
+                begin = mid;
+            }
+        }
+        if(reader->get(begin) == target){
+            return begin;
+        }else{
+            if(reader->get(end) == target){
+                return end;
+            }
+            else{
+                return -1;
+            }
+        }
+    }
+};

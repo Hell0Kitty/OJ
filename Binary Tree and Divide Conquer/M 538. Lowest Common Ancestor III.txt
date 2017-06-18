@@ -1,0 +1,64 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary tree.
+     * @param A and B: two nodes
+     * @return: Return the LCA of the two nodes.
+     */
+    struct ResultType{
+        bool findA;
+        bool findB;
+        ResultType(): findA(0), findB(0){}
+        ResultType(bool a, bool b){
+            findA = a;
+            findB = b;
+        }
+    }; 
+    int MaxHeight = -1;
+    TreeNode *result = NULL; 
+    TreeNode *lowestCommonAncestor3(TreeNode* root, TreeNode* A, TreeNode* B) {
+        // write your code here
+        if(root == NULL){
+            return NULL;
+        }
+        helper(root, A, B, -1);
+        return result;
+    }
+    
+    ResultType helper(TreeNode* root, TreeNode* A, TreeNode* B, int height){
+        ResultType l, r;
+        ++ height;
+        if(root -> left != NULL){
+            l = helper(root -> left, A, B, height);
+        }
+        if(root -> right != NULL){
+            r = helper(root -> right, A, B, height);
+        }
+        ResultType found(l.findA || r.findA, l.findB || r.findB);
+        if(root == A){
+            found.findA = 1;
+        }
+        if(root == B){
+            found.findB = 1;
+        }
+        if(found.findA && found.findB){
+            if(height > MaxHeight){
+                MaxHeight = height;
+                result = root;
+            }
+        }
+    return found;
+    }
+};

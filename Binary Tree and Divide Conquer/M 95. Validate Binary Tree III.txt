@@ -1,0 +1,52 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of binary tree.
+     * @return: True if the binary tree is BST, or false
+     */
+    //TRAVERSE
+    bool isValidBST(TreeNode *root) {
+        // write your code here
+        if(root == NULL){
+            return true;
+        }
+        vector<TreeNode *> stack;
+        bool result = 1;
+        bool first = 1;
+        int prev = 0;
+        TreeNode *curr = root;
+        while(true){
+            while(curr != NULL){
+                stack.push_back(curr);
+                curr = curr -> left;
+            }
+            if(stack.empty()){
+                return result;
+            }
+            curr = stack.back();
+            stack.pop_back();
+            if(first){
+                first = 0;
+            }else{
+                if(curr -> val <= prev){
+                    result = 0;
+                }
+            }
+            prev = curr -> val;
+            curr = curr -> right; 
+        }
+        return result;
+    }
+};

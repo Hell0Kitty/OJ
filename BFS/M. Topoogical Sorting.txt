@@ -1,0 +1,62 @@
+/**
+ * Definition for Directed graph.
+ * struct DirectedGraphNode {
+ *     int label;
+ *     vector<DirectedGraphNode *> neighbors;
+ *     DirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param graph: A list of Directed graph node
+     * @return: Any topological order for the given graph.
+     */
+    vector<DirectedGraphNode*> topSort(vector<DirectedGraphNode*> graph) {
+        // write your code here
+        if(graph.size() == 0){
+            return {};
+        }
+        map<DirectedGraphNode *, int> degree;
+        vector<DirectedGraphNode *> stack, result;
+        for (DirectedGraphNode *node: graph){
+            for(DirectedGraphNode *out : node -> neighbors){
+                if(degree.find(out) != degree.end()){
+                    ++ degree[out];
+                }else{
+                    degree[out] = 1;
+                }
+            }
+        }
+        for(DirectedGraphNode *node: graph){
+            if(degree.find(node) == degree.end()){
+                degree[node] = 0;
+            }
+        }
+        while(true){
+            bool found0 = 0;
+            for(auto &it : degree){
+                if(it.second == 0){
+                    stack.push_back(it.first);
+                    degree.erase(it.first);
+                    found0 = 1;
+                }
+            }
+            if(!found0){
+                break;
+            }
+            while(!stack.empty()){
+                DirectedGraphNode * node = stack.back();
+                stack.pop_back();
+                result.push_back(node);
+                for(auto &out: (node -> neighbors)){
+                    auto it = degree.find(out);
+                    if(it != degree.end()){
+                        -- (it -> second);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+};

@@ -1,0 +1,123 @@
+class Solution {
+public:
+    /**
+     * @param image a binary matrix with '0' and '1'
+     * @param x, y the location of one of the black pixels
+     * @return an integer
+     */
+    int minArea(vector<vector<char>>& image, int x, int y) {
+        // Write your code here
+        if(image.size() == 0 || image[0].size() == 0){
+            return -1;
+        }
+        int m = image.size(), n = image[0].size();
+        
+        //calculate first col without black pixel;
+        int begin = 0, end = y, mid = 0;
+        int LEFT = 0;
+        while(begin + 1 < end){
+            mid = begin + (end - begin) / 2;
+            if(checkCol(mid, image, m)){
+                begin = mid;
+            }
+            else{
+                end = mid;
+            }
+        }
+        if(checkCol(end,image,m)){
+            LEFT = end;
+        }
+        else{
+            if(checkCol(begin,image,m)){
+                LEFT = begin;
+            }else LEFT = -1;
+        }
+        
+        //calculate last col with black pixel;
+        int RIGHT = n - 1;
+        begin = y, end = n - 1, mid = 0;
+        while(begin + 1 < end){
+            mid = begin + (end - begin) / 2;
+            if(!checkCol(mid, image, m)){
+                begin = mid;
+            }
+            else{
+                end = mid;
+            }
+        }
+        // if(!checkCol(end,image,m)){
+        //     RIGHT = end;
+        // }else{
+        //     if(!checkCol(begin,image,m)){
+        //         RIGHT = begin;
+        //     }
+        // }
+        if(!checkCol(end,image,m)){
+            RIGHT = end;
+        }else{
+            RIGHT = begin;
+        }
+        
+        //calculate last col with black pixel;
+        int TOP = 0;
+        begin = 0, end = x, mid = 0;
+        while(begin + 1 < end){
+            mid = begin + (end - begin) / 2;
+            if(checkRow(mid, image, n)){
+                begin = mid;
+            }
+            else{
+                end = mid;
+            }
+        } 
+        if(checkRow(end,image,n)){
+            TOP = end;
+        }else{
+            if(checkRow(begin,image,n)){
+                TOP = begin;
+            }else TOP = -1;
+        }
+        
+        //calculate last col with black pixel;
+        int BOT = m - 1;
+        begin = x, end = m - 1, mid = 0;
+        while(begin + 1 < end){
+            mid = begin + (end - begin) / 2;
+            if(!checkRow(mid, image, n)){
+                begin = mid;
+            }
+            else{
+                end = mid;
+            }
+        }
+        // if(!checkRow(end,image,n)){
+        //     BOT = end;
+        // }else{
+        //     if(!checkRow(begin,image,n)){
+        //         BOT = begin;
+        //     }
+        // }
+        if(!checkRow(end,image,n)){
+            BOT = end;
+        }else{
+            BOT = begin;
+        }
+        // cout<< BOT<<' '<<TOP<<' '<<RIGHT<<' '<<LEFT;
+        return (BOT - TOP)  * (RIGHT - LEFT);
+    }
+    
+   inline bool checkCol(int col, vector<vector<char>> image, int m){
+        for(int i = 0; i < m; ++ i){
+            if (image[i][col] == '1')
+            return false;
+        }
+        return true;
+    }
+   inline bool checkRow(int row, vector<vector<char>> image, int n){
+        for(int j = 0; j < n; ++ j){
+            if (image[row][j] == '1')
+            return false;
+        }
+        return true;
+    }
+};

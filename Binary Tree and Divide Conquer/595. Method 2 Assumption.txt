@@ -1,0 +1,40 @@
+    /**
+     * @param root the root of binary tree
+     * @return the length of the longest consecutive sequence path
+     */
+    struct ResultType{
+        int height = 0;
+        int curr = 0;
+        TreeNode* root = NULL;
+        ResultType(int _height, int _curr, TreeNode* _root){
+            height = _height;
+            curr = _curr;
+            root = _root;
+        }
+    }
+    TreeNode *MaxNode = NULL;
+    int MaxHeight = 0;
+    int longestConsecutive(TreeNode* root) {
+        // Write your code here
+        findSub(root);
+    }
+    ResultType findSub(TreeNode *root){
+        if (root == NULL){
+            return {0, 0, NULL};
+        }
+        ResultType Left = findSub(root -> left),
+                    Right = findSub(root -> right);
+        int lheight = 0, rheight = 0;
+        int lcurr = 0;
+        TreeNode* _root = NULL;
+        if(root -> left == Left.root && Left.curr == root -> val + 1){
+            _height = Left.height + 1;
+            _curr = root -> val;
+            _root = root;
+        }
+        if(root -> left == Left.root && Left.curr == root -> val + 1){
+            _height = Left.height + 1;
+            _curr = root -> val;
+            _root = root;
+        }
+    }

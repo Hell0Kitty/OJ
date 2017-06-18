@@ -1,0 +1,73 @@
+class Solution {
+    /** 
+     * param A : an integer ratated sorted array
+     * param target :  an integer to be searched
+     * return : an integer
+     */
+public:
+    int search(vector<int> &A, int target) {
+        // write your code here
+        if(A.size() == 0){
+            return -1;
+        }
+        int pivot = A[0];
+        int begin = 0, end = A.size() - 1, mid = 0;
+        while(begin + 1 < end){
+            mid = begin + (end - begin) / 2;
+            if(A[mid] < pivot){
+                end = mid;
+            }
+            else{
+                begin = mid;
+            }
+        }
+        
+        int min_idx = 0;
+        if(A[begin] < pivot){
+            min_idx = begin;
+        }else{
+            if(A[end] < pivot){
+                min_idx = end;
+            }
+        }
+        if(min_idx == 0){
+            return BinarySearch(A, 0, A.size() - 1, target);
+        }
+        else{
+            if(target == pivot){
+                return 0;
+            }else{
+                if(target > pivot){
+                    return BinarySearch(A, 0, min_idx - 1, target);
+                }
+                else return BinarySearch(A, min_idx, A.size() - 1, target);
+            }
+        }
+    }
+    
+int BinarySearch(vector<int> A, int begin, int end, int target){
+    int mid = 0;
+    while(begin + 1 < end){
+        mid = begin + (end - begin) / 2;
+        if(A[mid] > target){
+            end = mid;
+        }else{
+            if(A[mid] < target){
+                begin = mid;
+            }
+            else{
+                return mid;
+            }
+        }
+    }
+    if(A[begin] == target){
+        return begin;
+    }else{
+        if(A[end] == target){
+            return end;
+        }else{
+            return -1;
+        }
+    }
+}
+};

@@ -1,0 +1,58 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+struct ResultType{
+    TreeNode* begin;
+    TreeNode* end;
+    ResultType(): begin(NULL), end(NULL){}
+    ResultType(TreeNode * b, TreeNode* e){
+        begin = b;
+        end = e;
+    }
+};
+class Solution {
+public:
+    /**
+     * @param root: a TreeNode, the root of the binary tree
+     * @return: nothing
+     */
+    void flatten(TreeNode *root) {
+        // write your code here
+        if(root == NULL){
+            return;
+        }
+        helper(root);
+    }
+    ResultType helper(TreeNode *root){
+        if(root == NULL){
+            return ResultType();
+        }
+        if(root -> left == NULL && root -> right == NULL){
+            return {root, root};
+        }
+        ResultType result(root, root);
+        TreeNode *temp = root -> right;
+        if(root -> left != NULL){
+            ResultType Left = helper(root -> left);
+            root -> right = Left.begin;
+            root -> left = NULL;
+            result.end = Left.end;
+        }
+        if(temp != NULL){
+            ResultType Right = helper(temp);
+            result.end -> right = Right.begin;
+            result.end = Right.end;
+        }
+        return result;
+
+    }
+};

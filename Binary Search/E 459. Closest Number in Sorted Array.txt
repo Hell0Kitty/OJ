@@ -1,0 +1,42 @@
+class Solution {
+public:
+    /**
+     * @param A an integer array sorted in ascending order
+     * @param target an integer
+     * @return an integer
+     */
+    int closestNumber(vector<int>& A, int target) {
+        // Write your code here
+        if(A.size() == 0 ){
+            return -1;
+        }
+        vector<int>::const_iterator begin = A.cbegin(), end = A.cend() - 1, mid;
+        while(begin + 1 < end){
+            mid = begin + (end - begin) / 2;
+            if(*mid >= target){
+                end = mid;
+            }
+            else{
+                begin = mid;
+            }
+        }
+
+        if(*begin == target){
+            return int(begin - A.cbegin());
+        }
+        else{
+            if(*end == target){
+                return int(end - A.cbegin());
+            }
+            else{
+                if(*end - target > target - *begin)
+                {
+                    return int(begin - A.cbegin());
+                }
+                else{
+                    return int(end - A.cbegin());
+                }
+            }
+        }
+    }
+};

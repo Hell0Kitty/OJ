@@ -1,0 +1,62 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root the root of binary tree
+     * @param target an integer
+     * @return all valid paths
+     */
+    vector<vector<int>> binaryTreePathSum(TreeNode *root, int target) {
+        // Write your code here
+        vector<vector<int> > result;
+        if(root == NULL){
+            return result;
+        }
+        result.push_back(vector<int>(root -> val));
+        result = helper(root, target, result);
+    }
+    vector<vector<int>> helper(TreeNode * root, int target, vector<vector<int>> result){
+        if(root -> left == NULL && root -> right == NULL){
+            if(root -> val == target){
+                return result;
+            }
+            else{
+                result = {{}};
+            }
+            return result;
+        }
+        vector<vector<int>> result1 = result, result2 = result;
+
+        if(root -> right != NULL){
+            for(vector<int> &v: result1){
+                v.push_back(root -> right -> val);
+                }
+            result1 = helper(root -> right, target - root -> val, result1);
+            if(root -> left != NULL){
+                for(vector<int> &v: result2){
+                    v.push_back(root -> left -> val);
+                }
+                result2 = helper(root -> left, target - root -> val, result2);
+                result1.insert(result1.end(),result2.begin(),result2.end());
+            }
+        }else{
+            for(vector<int> &v: result1){
+                    v.push_back(root -> left -> val);
+            }
+            result1 = helper(root -> left, target - root -> val, result);
+        }
+        return result1;
+
+    }
+};

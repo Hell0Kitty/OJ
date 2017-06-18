@@ -1,0 +1,22 @@
+int searchBigSortedArray(ArrayReader *reader, int target) {
+        // write your code here
+        int end = target;
+        while(reader->get(end) < target){
+            end *= end;
+        }
+        int begin = 0, mid = 0;
+        while(begin < end){
+            mid = begin + (end - begin) /2 ;
+            if(reader->get(mid) < target){
+                begin = mid + 1;
+            }
+            else{
+                end = mid;
+            }
+        }
+        if(reader->get(begin) == target){
+            return begin;}
+            else{
+                return -1;
+            }
+        }

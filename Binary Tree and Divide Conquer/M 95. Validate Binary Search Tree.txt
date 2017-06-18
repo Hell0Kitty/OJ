@@ -1,0 +1,35 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of binary tree.
+     * @return: True if the binary tree is BST, or false
+     */
+    bool isValidBST(TreeNode *root) {
+        // write your code here
+        long long Max =  LLONG_MAX, Min = LLONG_MIN;
+        return isBST(root,  Min, Max);
+    }
+    bool isBST(TreeNode * root, long long Min, long long Max){
+        if(root == NULL){
+            return true;
+        }
+        if(root -> val >= Max || root -> val <= Min){
+            return false;
+        }
+        long long root_value = root -> val;
+        return isBST(root -> left, Min, min(Max, root_value)) 
+                && isBST(root -> right, max(root_value, Min), Max);
+    }
+};
